@@ -1,0 +1,10 @@
+[package]
+name = "token_info"
+version = "0.0.1"
+authors = ["Andrew Turner <me@sunspar.net>"]
+
+[dependencies]
+log4rs = "^ 0.7"
+tokio-core = "^ 0.1"
+futures = "^ 0.1"
+gw2rs = { path = "../.." }
