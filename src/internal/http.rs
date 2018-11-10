@@ -2,22 +2,20 @@ use futures::{Future, Stream};
 use hyper::{Method, Request, Uri};
 use hyper::client::{Client, HttpConnector};
 use hyper_tls::HttpsConnector;
-use crate::prelude::*;
 use serde::de::DeserializeOwned;
+use std::fmt::Write;
 use std::str::FromStr;
 use url::Url;
 
+use crate::prelude::*;
+
 #[cfg(feature = "header-locale")]
 use hyper::header::{q, AcceptLanguage, Authorization, Bearer, LanguageTag, QualityItem};
+
 #[cfg(feature = "header-locale")]
 use std::collections::BTreeMap;
 
-use std::fmt::Write;
-
 const API_ROOT: &str = "https://api.guildwars2.com/v2";
-
-#[cfg(feature = "futures-boxed")]
-type HttpReturn<A, B> = Box<Future<Item = A, Error = B>>;
 
 fn preprocess<'a>(url: &mut Url, req: &mut Request, params: Vec<Param<'a>>) {
     let mut pairs = url.query_pairs_mut();
@@ -93,7 +91,7 @@ pub(crate) fn http_request<'a>(
     client: &Client<HttpsConnector<HttpConnector>>,
     endpoint: Endpoint,
     params: Vec<Param<'a>>
-) -> HttpReturn<String, APIError> {
+) -> impl Future<Item = String, Error = APIError> {
     let mut url = Url::parse(&format!("{}{}", &API_ROOT, endpoint.as_str()))
         .expect("Fatal error parsing api URL");
     let mut request = Request::new(Method::Get, Uri::default());
@@ -102,15 +100,12 @@ pub(crate) fn http_request<'a>(
 
     request.set_uri(Uri::from_str(&url.into_string()).expect("Fatal error converting constructed URL to Hyper's Uri type."));
 
-    let work = client
+    client
         .request(request)
         .and_then(|res|
             res.body().concat2().map(|chunk| String::from_utf8_lossy(&chunk).to_string())
         )
-        .map_err(|_| APIError::InternalHTTP);
-
-    #[cfg(feature = "futures-boxed")]
-    Box::new(work)
+        .map_err(|_| APIError::InternalHTTP)
 }
 
 /// Converts a fetched string of (presumably) JSON data into the appropriate struct.

@@ -1,5 +1,6 @@
 /// Enumeration of available API endpoints from the Guild Wars 2 API.
 /// Used internally to  aid in the consistent generation of URLs as part of fetching API data.
+#[derive(Debug)]
 pub(crate) enum Endpoint {
     Achievements,
     AchievementsCategories,

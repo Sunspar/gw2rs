@@ -80,7 +80,6 @@ pub use crate::internal::gw2::GW2;
 pub use crate::internal::locale::Locale;
 pub use crate::internal::result::APIError;
 pub use crate::internal::result::ErrorResponse;
-pub use crate::internal::result::GW2Result;
 
 pub(crate) use crate::internal::endpoint::Endpoint;
 pub(crate) use crate::internal::param::Param;

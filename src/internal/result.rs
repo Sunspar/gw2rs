@@ -1,10 +1,3 @@
-use futures::Future;
-
-/// The `GW2Result` type is the libraries native return type. Everything leaving the library should
-/// return this type.
-#[cfg(feature = "futures-boxed")]
-pub type GW2Result<T> = Box<Future<Item = T, Error = APIError>>;
-
 /// Enumerates error conditions expected throughout the library.
 #[derive(Debug, Serialize)]
 pub enum APIError {

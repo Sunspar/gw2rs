@@ -1,10 +1,8 @@
 use futures::Future;
 use hyper::client::{Client, HttpConnector};
 use hyper_tls::HttpsConnector;
-use std::fmt::{Display};
 use tokio_core::reactor::Handle;
 use std::ops::Deref;
-
 
 use crate::prelude::*;
 

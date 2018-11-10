@@ -8,7 +8,7 @@ use gw2rs::prelude::*;
 
 fn main() {
     let mut reactor = Core::new().unwrap();
-    let gw2_client = GW2::new(String::from("B5A035FF-EBE0-7A46-B615-F910431D9D6F190E6C87-2FCF-4EA3-81BD-79A73A7C9704"), Locale::EN, reactor.handle());
+    let gw2_client = GW2::new(String::from("FE630B14-6CBF-D845-9918-641093FF4361C0508B84-B0C6-42A5-A995-3A855F079680"), Locale::EN, reactor.handle());
     let token_info = gw2_client.token_info().map(|res| {
         println!("Your token is: {} - {}", res.name(), res.id());
     });
