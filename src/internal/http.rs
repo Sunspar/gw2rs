@@ -3,7 +3,7 @@ use hyper::{Method, Request, Uri};
 use hyper::client::{Client, HttpConnector};
 use hyper_tls::HttpsConnector;
 use serde::de::DeserializeOwned;
-use std::fmt::Write;
+use std::fmt::{Display, Write};
 use std::str::FromStr;
 use url::Url;
 
@@ -17,87 +17,171 @@ use std::collections::BTreeMap;
 
 const API_ROOT: &str = "https://api.guildwars2.com/v2";
 
-fn preprocess<'a>(url: &mut Url, req: &mut Request, params: Vec<Param<'a>>) {
-    let mut pairs = url.query_pairs_mut();
+fn process_request_params_generic(
+    request: &mut Request,
+    url: &mut Url,
+    quantity: Option<u64>,
+    locale: Option<Locale>,
+    token: Option<&str>
+) {
+    let mut query_pairs = url.query_pairs_mut();
 
-    for param in params {
-        match param {
-            Param::Locale(ref item) => {
-                // Pull the LanguageTag in directly, so we can avoid having to depend on
-                // language-tags just to use a single macro that might not even get
-                // compiled into client code in the first place.
-                #[cfg(feature = "header-locale")]
-                req.headers_mut().set(AcceptLanguage(vec![
-                    QualityItem::new(
-                        LanguageTag {
-                            language: Some(item.to_string()),
-                            extlangs: Vec::new(),
-                            script: None,
-                            region: None,
-                            variants: Vec::new(),
-                            extensions: BTreeMap::new(),
-                            privateuse: Vec::new(),
-                        },
-                        q(1000),
-                    ),
-                ]));
+    if let Some(qty) = quantity {
+        query_pairs.append_pair("quantity", &qty.to_string());
+    }
 
-                #[cfg(feature = "query-locale")]
-                pairs.append_pair("lang", item.as_ref());
-            }
+    if let Some(l) = locale {
+        // Pull the LanguageTag in directly, so we can avoid having to depend on
+        // language-tags just to use a single macro that might not even get
+        // compiled into client code in the first place.
+        #[cfg(feature = "header-locale")]
+        request.headers_mut().set(AcceptLanguage(vec![
+            QualityItem::new(
+                LanguageTag {
+                    language: Some(l.to_string()),
+                    extlangs: Vec::new(),
+                    script: None,
+                    region: None,
+                    variants: Vec::new(),
+                    extensions: BTreeMap::new(),
+                    privateuse: Vec::new(),
+                },
+                q(1000),
+            ),
+        ]));
 
-            Param::AuthToken(item) => {
-                #[cfg(feature = "header-auth")]
-                req.headers_mut().set(Authorization(Bearer {
-                    token: String::from(item),
-                }));
+        #[cfg(feature = "query-locale")]
+        pairs.append_pair("lang", l.as_ref());
+    }
 
-                #[cfg(feature = "query-auth")]
-                pairs.append_pair("access_token", item);
-            }
+    if let Some(t) = token {
+        #[cfg(feature = "header-auth")]
+        request.headers_mut().set(Authorization(Bearer {
+            token: String::from(t),
+        }));
 
-            Param::Quantity(item) => {
-                pairs.append_pair("quantity", &item.to_string());
-            }
-
-            Param::StrIds(item) => {
-                let mut result = String::new();
-                let mut iter = item.into_iter();
-                if let Some(iter_item) = iter.next() {
-                    write!(&mut result, "{}", iter_item).expect("Failure building identifier string for API request");
-                    for elt in iter {
-                        write!(&mut result, ",{}", elt).expect("Failure building identifier string for API request");
-                    }
-                }
-                pairs.append_pair("ids", &result);
-            }
-
-            Param::IntIds(item) => {
-                let mut result = String::new();
-                let mut iter = item.into_iter();
-                if let Some(iter_item) = iter.next() {
-                    write!(&mut result, "{}", iter_item).expect("Failure building identifier string for API request");
-                    for other_item in iter {
-                        write!(&mut result, ",{}", other_item).expect("Failure building identifier string for API request");
-                    }
-                }
-                pairs.append_pair("ids", &result);
-            }
-        }
+        #[cfg(feature = "query-auth")]
+        query_pairs.append_pair("access_token", t);
     }
 }
 
-pub(crate) fn http_request<'a>(
+fn process_request_params_strings<A, B>(
+    request: &mut Request,
+    url: &mut Url,
+    identifiers: Option<A>,
+    quantity: Option<u64>,
+    locale: Option<Locale>,
+    token: Option<&str>
+)
+where 
+    A: AsRef<[B]>,
+    B: AsRef<str> + Display
+{
+    process_request_params_generic(request, url, quantity, locale, token);
+    let mut query_pairs = url.query_pairs_mut();
+
+    if let Some(ids) = identifiers {
+        let mut result = String::new();
+        let mut iter = ids.as_ref().iter();
+        if let Some(iter_item) = iter.next() {
+            write!(&mut result, "{}", iter_item.as_ref()).expect("Failure building identifier string for API request");
+            for elt in iter {
+                write!(&mut result, ",{}", elt.as_ref()).expect("Failure building identifier string for API request");
+            }
+        }
+        query_pairs.append_pair("ids", &result);
+    }   
+}
+
+fn process_request_params_ints<A, B>(
+    request: &mut Request,
+    url: &mut Url,
+    identifiers: Option<A>,
+    quantity: Option<u64>,
+    locale: Option<Locale>,
+    token: Option<&str>
+) where
+    A: AsRef<[B]>,
+    B: Into<u64> + Display
+{
+    process_request_params_generic(request, url, quantity, locale, token);
+    let mut query_pairs = url.query_pairs_mut();
+
+    if let Some(ids) = identifiers {
+        let mut result = String::new();
+        let mut iter = ids.as_ref().iter();
+        if let Some(iter_item) = iter.next() {
+            write!(&mut result, "{}", iter_item).expect("Failure building identifier string for API request");
+            for other_item in iter {
+                write!(&mut result, ",{}", other_item).expect("Failure building identifier string for API request");
+            }
+        }
+        query_pairs.append_pair("ids", &result);
+    }   
+}
+
+pub(crate) fn request_without_ids(
     client: &Client<HttpsConnector<HttpConnector>>,
     endpoint: Endpoint,
-    params: Vec<Param<'a>>
+    quantity: Option<u64>,
+    locale: Option<Locale>,
+    token: Option<&str>,
 ) -> impl Future<Item = String, Error = APIError> {
     let mut url = Url::parse(&format!("{}{}", &API_ROOT, endpoint.as_str()))
         .expect("Fatal error parsing api URL");
     let mut request = Request::new(Method::Get, Uri::default());
+    process_request_params_generic(&mut request, &mut url, quantity, locale, token);
+    request.set_uri(Uri::from_str(&url.into_string()).expect("Fatal error converting constructed URL to Hyper's Uri type."));
 
-    preprocess(&mut url, &mut request, params);
+    client
+        .request(request)
+        .and_then(|res|
+            res.body().concat2().map(|chunk| String::from_utf8_lossy(&chunk).to_string())
+        )
+        .map_err(|_| APIError::InternalHTTP)
+}
 
+pub(crate) fn request_with_string_ids<A, B>(
+    client: &Client<HttpsConnector<HttpConnector>>,
+    endpoint: Endpoint,
+    identifiers: Option<A>,
+    quantity: Option<u64>,
+    locale: Option<Locale>,
+    token: Option<&str>
+) -> impl Future<Item = String, Error = APIError>
+where
+    A: AsRef<[B]>,
+    B: AsRef<str> + Display
+{
+    let mut url = Url::parse(&format!("{}{}", &API_ROOT, endpoint.as_str()))
+        .expect("Fatal error parsing api URL");
+    let mut request = Request::new(Method::Get, Uri::default());
+    process_request_params_strings(&mut request, &mut url, identifiers, quantity, locale, token);
+    request.set_uri(Uri::from_str(&url.into_string()).expect("Fatal error converting constructed URL to Hyper's Uri type."));
+
+    client
+        .request(request)
+        .and_then(|res|
+            res.body().concat2().map(|chunk| String::from_utf8_lossy(&chunk).to_string())
+        )
+        .map_err(|_| APIError::InternalHTTP)
+}
+
+pub(crate) fn request_with_numeric_ids<A, B>(
+    client: &Client<HttpsConnector<HttpConnector>>,
+    endpoint: Endpoint,
+    identifiers: Option<A>,
+    quantity: Option<u64>,
+    locale: Option<Locale>,
+    token: Option<&str>
+) -> impl Future<Item = String, Error = APIError>
+where
+    A: AsRef<[B]>,
+    B: Into<u64> + Display
+{
+    let mut url = Url::parse(&format!("{}{}", &API_ROOT, endpoint.as_str())).expect("Fatal error parsing api URL");
+    let mut request = Request::new(Method::Get, Uri::default());
+    process_request_params_ints(&mut request, &mut url, identifiers, quantity, locale, token);
     request.set_uri(Uri::from_str(&url.into_string()).expect("Fatal error converting constructed URL to Hyper's Uri type."));
 
     client

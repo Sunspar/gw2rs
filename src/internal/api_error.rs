@@ -1,3 +1,5 @@
+use crate::internal::error_response::ErrorResponse;
+
 /// Enumerates error conditions expected throughout the library.
 #[derive(Debug, Serialize)]
 pub enum APIError {
@@ -12,11 +14,4 @@ pub enum APIError {
     InternalHTTP,
     /// There was an error, but we aren't giving it a specific name or meaning yet.
     Generic,
-}
-
-/// `ErrorResponse`s represent the JSON payloads from API calls that resulted in errors.
-#[derive(Debug, Serialize, Deserialize)]
-pub struct ErrorResponse {
-    /// The error message returned by ArenaNet.
-    pub text: String,
 }

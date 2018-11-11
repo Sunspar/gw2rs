@@ -11,9 +11,9 @@ macro_rules! gw2rs_id_generic {
             }
         }
 
-        impl ::std::fmt::Display for $name {
-            fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-                ::std::fmt::Display::fmt(&self.0, f)
+        impl std::fmt::Display for $name {
+            fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+                std::fmt::Display::fmt(&self.0, f)
             }
         }
     };
@@ -32,6 +32,12 @@ macro_rules! gw2rs_id_u64 {
         impl From<u64> for $name {
             fn from(id_as_u64: u64) -> $name {
                 $name(id_as_u64)
+            }
+        }
+
+        impl From<$name> for u64 {
+            fn from(id_as_newtype: $name) -> u64 {
+                id_as_newtype.0
             }
         }
     };

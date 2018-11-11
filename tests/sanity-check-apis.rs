@@ -70,6 +70,8 @@ fn achievement_groups() {
     let gw2_client = GW2::new(token, Locale::EN, reactor.handle());
     let gw2_future = gw2_client.achievement_groups();
     let api_results = reactor.run(gw2_future).unwrap();
+    let result_item = &api_results[2];
+    assert_eq!(result_item, &AchievementGroupId(String::from("B42E2379-9599-46CA-9D4A-40A27E192BBE")));
 }
 
 #[test]
@@ -657,35 +659,35 @@ fn wvw_upgrades_by_ids() {
     );
 }
 
-#[test]
-fn titles() {
-    let mut reactor = Core::new().unwrap();
-    let token = std::env::var("GW2RS_TEST_API_KEY")
-        .expect("The environment variable GW2RS_TEST_API_KEY not set");
-    let gw2_client = GW2::new(token, Locale::EN, reactor.handle());
-    let gw2_future = gw2_client.titles();
-    let api_results = reactor.run(gw2_future).unwrap();
-    let result_item = &api_results[13];
-    assert_eq!(result_item, &TitleId(15));
-}
+// #[test]
+// fn titles() {
+//     let mut reactor = Core::new().unwrap();
+//     let token = std::env::var("GW2RS_TEST_API_KEY")
+//         .expect("The environment variable GW2RS_TEST_API_KEY not set");
+//     let gw2_client = GW2::new(token, Locale::EN, reactor.handle());
+//     let gw2_future = gw2_client.titles();
+//     let api_results = reactor.run(gw2_future).unwrap();
+//     let result_item = &api_results[13];
+//     assert_eq!(result_item, &TitleId(15));
+// }
 
-#[test]
-fn titles_by_ids() {
-    let mut reactor = Core::new().unwrap();
-    let token = std::env::var("GW2RS_TEST_API_KEY")
-        .expect("The environment variable GW2RS_TEST_API_KEY not set");
-    let gw2_client = GW2::new(token, Locale::EN, reactor.handle());
-    let ids = vec![251, 261, 264];
-    let gw2_future = gw2_client.titles_by_ids(&ids);
-    let api_results = reactor.run(gw2_future).unwrap();
-    let result_item = &api_results[2];
-    assert_eq!(result_item.id(), TitleId(264));
-    assert_eq!(result_item.name(), "Committed");
-    assert_eq!(
-        result_item.achievements(),
-        vec![AchievementId(3287)].as_slice()
-    );
-}
+// #[test]
+// fn titles_by_ids() {
+//     let mut reactor = Core::new().unwrap();
+//     let token = std::env::var("GW2RS_TEST_API_KEY")
+//         .expect("The environment variable GW2RS_TEST_API_KEY not set");
+//     let gw2_client = GW2::new(token, Locale::EN, reactor.handle());
+//     let ids = vec![251, 261, 264];
+//     let gw2_future = gw2_client.titles_by_ids(&ids);
+//     let api_results = reactor.run(gw2_future).unwrap();
+//     let result_item = &api_results[2];
+//     assert_eq!(result_item.id(), TitleId(264));
+//     assert_eq!(result_item.name(), "Committed");
+//     assert_eq!(
+//         result_item.achievements(),
+//         vec![AchievementId(3287)].as_slice()
+//     );
+// }
 
 
 // #[test]

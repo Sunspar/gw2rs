@@ -78,9 +78,8 @@ pub use crate::anet::wvw::wvw_match::WVWMatchId;
 pub use crate::internal::gold_value::GoldValue;
 pub use crate::internal::gw2::GW2;
 pub use crate::internal::locale::Locale;
-pub use crate::internal::result::APIError;
-pub use crate::internal::result::ErrorResponse;
+pub use crate::internal::api_error::APIError;
+pub use crate::internal::error_response::ErrorResponse;
 
 pub(crate) use crate::internal::endpoint::Endpoint;
-pub(crate) use crate::internal::param::Param;
 pub(crate) use serde_json;
