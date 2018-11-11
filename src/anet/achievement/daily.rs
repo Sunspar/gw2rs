@@ -1,4 +1,4 @@
-use crate::prelude::*;
+use ::prelude::*;
 
 /// `DailyAchievements` are the response of the daily achievement endpoints and map to the various
 /// categories of daily achievements found in the Game.

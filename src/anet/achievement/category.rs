@@ -1,6 +1,6 @@
 gw2rs_id_u64!(AchievementCategoryId);
 
-use crate::anet::achievement::achievement::AchievementId;
+use ::anet::achievement::achievement::AchievementId;
 
 /// `AchievementCategory`s represent broad categories of achievements in Guild Wars 2.
 #[derive(Debug, Serialize, Deserialize)]

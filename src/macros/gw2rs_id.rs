@@ -11,9 +11,9 @@ macro_rules! gw2rs_id_generic {
             }
         }
 
-        impl std::fmt::Display for $name {
-            fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-                std::fmt::Display::fmt(&self.0, f)
+        impl ::std::fmt::Display for $name {
+            fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+                ::std::fmt::Display::fmt(&self.0, f)
             }
         }
     };

@@ -1,4 +1,4 @@
-use std::fmt as StdFmt;
+use ::std::fmt as StdFmt;
 
 /// Represents valid language options, for endpoints that support it. It corresponds to the GET
 /// parameter `lang` in request URIs.

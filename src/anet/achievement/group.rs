@@ -1,4 +1,4 @@
-use crate::anet::achievement::category::AchievementCategoryId;
+use ::anet::achievement::category::AchievementCategoryId;
 
 gw2rs_id_string!(AchievementGroupId);
 

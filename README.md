@@ -1,5 +1,5 @@
 # GW2 RS
-[![Build Status](https://travis-ci.org/Sunspar/gw2rs.svg?branch=master)](https://travis-ci.org/Sunspar/gw2rs)[![Build status](https://ci.appveyor.com/api/projects/status/hou7p7nlae6a7rmk/branch/master?svg=true)](https://ci.appveyor.com/project/Sunspar/gw2rs/branch/master)
+[![Build Status](https://travis-ci.org/Sunspar/gw2rs.svg?branch=master)](https://travis-ci.org/Sunspar/gw2rs)
 
 GW2RS is an api wrapper around the ArenaNet Guild Wars 2 API, for Rust.
 

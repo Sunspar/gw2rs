@@ -1,4 +1,4 @@
-use crate::anet::achievement::region::Region;
+use ::anet::achievement::region::Region;
 
 /// `AchievementReward`s represent the various types of rewards you can receive for completing
 /// achievements within the game.

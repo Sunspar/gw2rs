@@ -1,4 +1,4 @@
-use crate::prelude::*;
+use ::prelude::*;
 
 /// `TradingPostDeliveries` represents a user's items and gold waiting for pickup from the Trading
 /// Post.

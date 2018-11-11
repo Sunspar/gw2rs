@@ -130,3 +130,8 @@ Endpoints as presented from https://api.guildwars2.com/v2
 - [x] /v2/wvw/ranks [l]
 - [-] /v2/wvw/rewardtracks [l,d]
 - [x] /v2/wvw/upgrades [l]
+
+- 1.30:
+    - replace all global paths to simplify them:
+        - e.g ::std::fmt::Result -> std::fmt::Result
+    - use `crate` instead of things like ::module as the start of paths

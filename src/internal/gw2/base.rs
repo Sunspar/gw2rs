@@ -2,7 +2,7 @@ use hyper::client::{Client, HttpConnector};
 use hyper_tls::HttpsConnector;
 use tokio_core::reactor::Handle;
 
-use crate::prelude::*;
+use ::prelude::*;
 
 /// The Guild Wars 2 API Wrapper.
 ///

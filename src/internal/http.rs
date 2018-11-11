@@ -3,17 +3,17 @@ use hyper::{Method, Request, Uri};
 use hyper::client::{Client, HttpConnector};
 use hyper_tls::HttpsConnector;
 use serde::de::DeserializeOwned;
-use std::fmt::{Display, Write};
-use std::str::FromStr;
+use ::std::fmt::{Display, Write};
+use ::std::str::FromStr;
 use url::Url;
 
-use crate::prelude::*;
+use ::prelude::*;
 
 #[cfg(feature = "header-locale")]
 use hyper::header::{q, AcceptLanguage, Authorization, Bearer, LanguageTag, QualityItem};
 
 #[cfg(feature = "header-locale")]
-use std::collections::BTreeMap;
+use ::std::collections::BTreeMap;
 
 const API_ROOT: &str = "https://api.guildwars2.com/v2";
 

@@ -15,4 +15,4 @@ mod token;
 mod world;
 mod wvw;
 
-pub use crate::internal::gw2::base::GW2;
+pub use ::internal::gw2::base::GW2;

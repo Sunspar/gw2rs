@@ -1,9 +1,9 @@
-use std::convert::From as StdFrom;
-use std::fmt::Display as StdDisplay;
-use std::fmt::Formatter as StdFormatter;
-use std::fmt::Result as StdFmtResult;
-use std::ops::Add as StdAdd;
-use std::ops::Sub as StdSub;
+use ::std::convert::From as StdFrom;
+use ::std::fmt::Display as StdDisplay;
+use ::std::fmt::Formatter as StdFormatter;
+use ::std::fmt::Result as StdFmtResult;
+use ::std::ops::Add as StdAdd;
+use ::std::ops::Sub as StdSub;
 
 /// `GoldValue`s are a convenience around monetary values provided by the ArenaNet API.
 /// In particular, endpoints that return monetary values natively return the number of copper coins

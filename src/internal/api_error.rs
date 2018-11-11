@@ -1,4 +1,4 @@
-use crate::internal::error_response::ErrorResponse;
+use ::internal::error_response::ErrorResponse;
 
 /// Enumerates error conditions expected throughout the library.
 #[derive(Debug, Serialize)]

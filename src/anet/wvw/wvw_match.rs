@@ -9,7 +9,7 @@ macro_rules! gw2rs_wvw_server_data {
     };
 }
 
-use crate::prelude::*;
+use ::prelude::*;
 
 gw2rs_id_string!(WVWMatchId);
 gw2rs_wvw_server_data!(WVWMatchScores, u64);
@@ -29,7 +29,7 @@ gw2rs_wvw_server_data!(WVWMatchMapScores, u64);
 gw2rs_wvw_server_data!(WVWMapKills, u64);
 gw2rs_wvw_server_data!(WVWMapDeaths, u64);
 
-use crate::anet::wvw::map::WVWMap;
+use ::anet::wvw::map::WVWMap;
 
 /// The `WVWMatch` struct represents all associated data related to a World versus World matchup.
 #[derive(Debug, Deserialize)]
