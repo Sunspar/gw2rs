@@ -120,7 +120,7 @@ Endpoints as presented from https://api.guildwars2.com/v2
 - [x] /v2/worlds [l]
 - [x] /v2/wvw/abilities [l]
 - [x] /v2/wvw/matches
-- [ ] /v2/wvw/matches/overview
+- [x] /v2/wvw/matches/overview
 - [ ] /v2/wvw/matches/scores
 - [ ] /v2/wvw/matches/stats
 - [ ] /v2/wvw/matches/stats/:id/guilds/:guild_id

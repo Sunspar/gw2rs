@@ -31,7 +31,7 @@ impl GW2 {
             .and_then(|res| ::internal::http::convert_to_struct::<Vec<ObjectiveId>>(&res))
     }
 
-    // /// Returns a list of World vs World objectives with the argument identifiers.
+    /// Returns a list of World vs World objectives with the argument identifiers.
     #[must_use]
     pub fn objectives_by_ids<'a>(&self, ids: &'a [&str]) -> impl Future<Item = Vec<Objective>, Error = APIError> + 'a {
         let client = self.get_http_client();   
@@ -41,7 +41,12 @@ impl GW2 {
             .and_then(|res| ::internal::http::convert_to_struct::<Vec<Objective>>(&res))
     }
 
-    // /// Fetches World versus World match list for both North America and Europe.
+    /// Fetches World versus World match list for both North America and Europe.
+    ///
+    /// identifiers can be represented as strings of the form:
+    /// <REGION_ID>-<TIER>
+    ///
+    /// where the region ID is 1 for NA matchups and 2 for EU matchups, and the tier is 1 through 4.
     #[must_use]
    pub fn wvw_matches(&self) -> impl Future<Item = Vec<WVWMatchId>, Error = APIError> {
         let client = self.get_http_client();   
@@ -95,5 +100,25 @@ impl GW2 {
         let endpoint = Endpoint::WVWUpgrades;
         ::internal::http::request_with_numeric_ids( client, endpoint, Some(ids), None, Some(locale), None)
             .and_then(|res| ::internal::http::convert_to_struct::<Vec<Upgrade>>(&res))
+    }
+
+    /// Returns a list of World vs World Match Overview identifiers.
+    #[must_use]
+    pub fn wvw_match_overviews(&self) -> impl Future<Item=Vec<WVWMatchOverviewId>, Error=APIError> {
+        let client = self.get_http_client();
+        let locale = self.locale();
+        let endpoint = Endpoint::WVWMatchOverviews;
+        ::internal::http::request_without_ids(client, endpoint, None, None, None)
+            .and_then(|res| ::internal::http::convert_to_struct::<Vec<WVWMatchOverviewId>>(&res))
+    }
+
+    /// Returns a list of World vs World Match Overview data for the given identifiers.
+    #[must_use]
+    pub fn wvw_match_overviews_by_ids<'a>(&self, ids: &'a [&str]) -> impl Future<Item=Vec<WVWMatchOverview>, Error=APIError> + 'a {
+        let client = self.get_http_client();
+        let locale = self.locale();
+        let endpoint = Endpoint::WVWMatchOverviews;
+        ::internal::http::request_with_string_ids(client, endpoint, Some(ids), None, None, None)
+            .and_then(|res| ::internal::http::convert_to_struct::<Vec<WVWMatchOverview>>(&res))
     }
 }

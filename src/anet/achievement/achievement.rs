@@ -15,6 +15,7 @@ pub struct Achievement {
     flags: Vec<String>, // TODO: Enum this?
     tiers: Vec<AchievementTier>,
     rewards: Option<Vec<AchievementReward>>,
+    fake: ()
 }
 
 impl Achievement {
