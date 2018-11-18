@@ -3,7 +3,7 @@ authors = ["Sunspar <me@sunspar.net>"]
 description = "A Rust library for the Guild Wars 2 API."
 keywords = ["guildwars2", "gw2", "api"]
 name = "gw2rs"
-version = "0.1.0"
+version = "0.2.0"
 license = "Apache-2.0/MIT"
 repository = "https://github.com/sunspar/gw2rs"
 maintenance = { status = "actively-developed" }

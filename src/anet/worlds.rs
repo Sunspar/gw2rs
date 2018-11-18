@@ -4,26 +4,9 @@ gw2rs_id_u64!(WorldId);
 /// localized name and general server population.
 #[derive(Debug, Deserialize)]
 pub struct World {
-    id: WorldId,
-    name: String,
-    population: WorldPopulation,
-}
-
-impl World {
-    /// Returns the world identifier for the given world (server).
-    pub fn id(&self) -> WorldId {
-        self.id
-    }
-
-    /// Returns the world name, as localized by the GW2 settings at request time.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    /// Returns the overall world population for the given world (server).
-    pub fn population(&self) -> WorldPopulation {
-        self.population
-    }
+    pub id: WorldId,
+    pub name: String,
+    pub population: WorldPopulation,
 }
 
 /// The `WorldPopulation` enum provides compile-time checks around the population restrictions

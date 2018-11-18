@@ -206,6 +206,7 @@ where
             }
             Err(v2) => {
                 warn!("Error converting API response into structs.");
+                warn!("This is usually because the data format returned to gw2rs has changed in some way.");
                 debug!("Initial Error was: {:?}", v1);
                 debug!("Error during error checking was: {:?}", v2);
                 Err(APIError::BadData)

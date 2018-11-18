@@ -4,103 +4,103 @@ gw2rs_id_string!(WVWMatchId);
 
 #[derive(Debug, Deserialize)]
 pub struct WVWMatchScores {
-    red: u64,
-    green: u64,
-    blue: u64,
+    pub red: u64,
+    pub green: u64,
+    pub blue: u64,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct WVWMatchServers {
-    red: WorldId,
-    green: WorldId,
-    blue: WorldId,
+    pub red: WorldId,
+    pub green: WorldId,
+    pub blue: WorldId,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct LinkedWVWServers {
-    red: Vec<WorldId>,
-    green: Vec<WorldId>,
-    blue: Vec<WorldId>,
+    pub red: Vec<WorldId>,
+    pub green: Vec<WorldId>,
+    pub blue: Vec<WorldId>,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct WVWMatchDeaths {
-    red: u64,
-    green: u64,
-    blue: u64,
+    pub red: u64,
+    pub green: u64,
+    pub blue: u64,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct WVWMatchKills {
-    red: u64,
-    green: u64,
-    blue: u64,
+    pub red: u64,
+    pub green: u64,
+    pub blue: u64,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct WVWMatchVictoryPoints {
-    red: u64,
-    green: u64,
-    blue: u64,
+    pub red: u64,
+    pub green: u64,
+    pub blue: u64,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct WVWMatchSkirmishScores {
-    red: u64,
-    green: u64,
-    blue: u64,
+    pub red: u64,
+    pub green: u64,
+    pub blue: u64,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct WVWMatchSkirmishMapScores {
-    red: u64,
-    green: u64,
-    blue: u64,
+    pub red: u64,
+    pub green: u64,
+    pub blue: u64,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct WVWMatchMapScores {
-    red: u64,
-    green: u64,
-    blue: u64,
+    pub red: u64,
+    pub green: u64,
+    pub blue: u64,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct WVWMapKills {
-    red: u64,
-    green: u64,
-    blue: u64,
+    pub red: u64,
+    pub green: u64,
+    pub blue: u64,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct WVWMapDeaths {
-    red: u64,
-    green: u64,
-    blue: u64,
+    pub red: u64,
+    pub green: u64,
+    pub blue: u64,
 }
 
 /// The `WVWMatch` struct represents all associated data related to a World versus World matchup.
 #[derive(Debug, Deserialize)]
 pub struct WVWMatch {
-    id: WVWMatchId,
-    start_time: String,
-    end_time: String,
-    scores: WVWMatchScores,
-    worlds: WVWMatchServers,
-    all_worlds: LinkedWVWServers,
-    deaths: WVWMatchDeaths,
-    kills: WVWMatchKills,
-    victory_points: WVWMatchVictoryPoints,
-    skirmishes: Vec<WVWMatchSkirmish>,
-    maps: Vec<WVWMatchMap>,
+    pub id: WVWMatchId,
+    pub start_time: String,
+    pub end_time: String,
+    pub scores: WVWMatchScores,
+    pub worlds: WVWMatchServers,
+    pub all_worlds: LinkedWVWServers,
+    pub deaths: WVWMatchDeaths,
+    pub kills: WVWMatchKills,
+    pub victory_points: WVWMatchVictoryPoints,
+    pub skirmishes: Vec<WVWMatchSkirmish>,
+    pub maps: Vec<WVWMatchMap>,
 }
 
 /// The `WVWMatchSkirmish` struct represents skirmish data for particular matchup.
 #[derive(Debug, Deserialize)]
 pub struct WVWMatchSkirmish {
-    id: u64,
-    scores: WVWMatchSkirmishScores,
-    map_scores: Vec<WVWMatchSkirmishMapScoreData>,
+    pub id: u64,
+    pub scores: WVWMatchSkirmishScores,
+    pub map_scores: Vec<WVWMatchSkirmishMapScoreData>,
 }
 
 /// The `WVWMatchSkirmishMapScoreData` struct contains the individual map scores for a given
@@ -108,21 +108,21 @@ pub struct WVWMatchSkirmish {
 #[derive(Debug, Deserialize)]
 pub struct WVWMatchSkirmishMapScoreData {
     #[serde(rename = "type")]
-    map: WVWMap,
-    scores: WVWMatchSkirmishMapScores,
+    pub map: WVWMap,
+    pub scores: WVWMatchSkirmishMapScores,
 }
 
 /// The `WVWSkirmishMap` struct details map specific data for a particular matchup.
 #[derive(Debug, Deserialize)]
 pub struct WVWMatchMap {
-    id: u64,
+    pub id: u64,
     #[serde(rename = "type")]
-    map: WVWMap,
-    scores: WVWMatchMapScores,
-    bonuses: Vec<WVWBonus>,
-    objectives: Vec<WVWObjective>,
-    kills: WVWMapKills,
-    deaths: WVWMapDeaths,
+    pub map: WVWMap,
+    pub scores: WVWMatchMapScores,
+    pub bonuses: Vec<WVWBonus>,
+    pub objectives: Vec<WVWObjective>,
+    pub kills: WVWMapKills,
+    pub deaths: WVWMapDeaths,
 }
 
 #[derive(Debug, Deserialize)]
@@ -139,8 +139,8 @@ pub enum WVWBonusOwner {
 
 #[derive(Debug, Deserialize)]
 pub struct WVWBonus {
-    bonus_type: WVWBonusType,
-    owner: WVWBonusOwner,
+    pub bonus_type: WVWBonusType,
+    pub owner: WVWBonusOwner,
 }
 
 #[derive(Debug, Deserialize)]
@@ -162,14 +162,14 @@ gw2rs_id_u64!(GuildId);
 
 #[derive(Debug, Deserialize)]
 pub struct WVWObjective {
-    id: WVWObjectiveId,
+    pub id: WVWObjectiveId,
     #[serde(rename = "type")]
-    objective_type: WVWObjectiveType,
-    last_flipped: String, // TODO: Timestamp
-    claimed_by: GuildId,
-    claimed_at: String, // TODO: timestamp
-    points_tick: u64,
-    points_capture: u64,
-    yaks_delivered: u64,
-    guild_upgrades: Vec<GuildUpgradeId>,
+    pub objective_type: WVWObjectiveType,
+    pub last_flipped: String, // TODO: Timestamp
+    pub claimed_by: GuildId,
+    pub claimed_at: String, // TODO: timestamp
+    pub points_tick: u64,
+    pub points_capture: u64,
+    pub yaks_delivered: u64,
+    pub guild_upgrades: Vec<GuildUpgradeId>,
 }
